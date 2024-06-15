@@ -77,7 +77,7 @@ Create a `src/main/proto/hello.proto` file with the following content:
 syntax = "proto3";
 
 option java_multiple_files = true;
-option java_package = "com.example.grpc";
+option java_package = "com.taeny.papa.grpc";
 option java_outer_classname = "HelloProto";
 
 package hello;
@@ -97,10 +97,10 @@ message HelloReply {
 
 ### 3. Implement the gRPC Service
 
-Create a `HelloServiceImpl.java` file in `src/main/java/com/example/grpc`:
+Create a `HelloServiceImpl.java` file in `src/main/java/com/taeny/papa/grpc`:
 
 ```java
-package com.example.grpc;
+package com.taeny.papa.grpc;
 
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
@@ -195,10 +195,10 @@ Ensure the `hello.proto` file is placed in `src/main/proto`.
 
 ### 3. Implement the gRPC Client Service
 
-Create a `GrpcClientService.java` file in `src/main/java/com/example/grpc`:
+Create a `GrpcClientService.java` file in `src/main/java/com/taeny/papa/grpc`:
 
 ```java
-package com.example.grpc;
+package com.taeny.papa.grpc;
 
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.springframework.stereotype.Service;
@@ -219,10 +219,10 @@ public class GrpcClientService {
 
 ### 4. Create a REST Controller
 
-Create a `GrpcClientController.java` file in `src/main/java/com/example/grpc`:
+Create a `GrpcClientController.java` file in `src/main/java/com/taeny/papa/grpc`:
 
 ```java
-package com.example.grpc;
+package com.taeny.papa.grpc;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -254,9 +254,11 @@ grpc:
     local-grpc-server:
       address: 'static://localhost:9090'
       negotiationType: plaintext
+  server:
+    port: 9091
 
 server:
-  port: 9091
+  port: 8081
 ```
 
 ## Building and Running the Projects
@@ -292,7 +294,7 @@ Create Dockerfiles for both server and client projects, build the images, and pu
 #### Dockerfile (example for server)
 
 ```Dockerfile
-FROM openjdk:17-jdk-slim
+FROM openjdk:21
 VOLUME /tmp
 COPY build/libs/grpc-server-0.0.1-SNAPSHOT.jar app.jar
 ENTRYPOINT ["java","-jar","/app.jar"]
