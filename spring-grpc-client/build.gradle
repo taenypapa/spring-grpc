@@ -1,8 +1,38 @@
+buildscript {
+    ext {
+        protobufVersion = '3.25.1'
+        protobufPluginVersion = '0.8.14'
+        grpcVersion = '1.58.1'
+    }
+}
+
 plugins {
     id 'java'
     id 'org.springframework.boot' version '3.2.6'
     id 'io.spring.dependency-management' version '1.1.5'
+    id 'application'
+    id 'idea'
+    id 'com.google.protobuf' version '0.9.4'
 }
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:${protobufVersion}"
+    }
+    clean {
+        delete generatedFilesBaseDir
+    }
+    plugins {
+        grpc {
+            artifact = "io.grpc:protoc-gen-grpc-java:${grpcVersion}"
+        }
+    }
+    generateProtoTasks {
+        all()*.plugins {
+            grpc{}
+        }
+    }
+}
+
 
 group = 'com.taeny.papa'
 version = '0.0.1-SNAPSHOT'
@@ -31,6 +61,24 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // https://mvnrepository.com/artifact/net.devh/grpc-client-spring-boot-starter
+    implementation group: 'net.devh', name: 'grpc-client-spring-boot-starter', version: '3.1.0.RELEASE'
+
+    runtimeOnly "io.grpc:grpc-netty-shaded:${grpcVersion}"
+    implementation "io.grpc:grpc-protobuf:${grpcVersion}"
+    implementation "io.grpc:grpc-stub:${grpcVersion}"
+
+    implementation 'com.google.protobuf:protobuf-java:3.21.12'
+
+    compileOnly 'org.apache.tomcat:annotations-api:6.0.53'
+
+    implementation 'io.grpc:grpc-xds:1.51.0' // Add this dependency for load balancing policies
+
+    // https://mvnrepository.com/artifact/io.grpc/grpc-util
+    runtimeOnly group: 'io.grpc', name: 'grpc-util', version: '1.64.0'
+
+
 }
 
 tasks.named('test') {

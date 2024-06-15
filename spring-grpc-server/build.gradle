@@ -1,11 +1,41 @@
+buildscript {
+    ext {
+        protobufVersion = '3.25.1'
+        protobufPluginVersion = '0.8.14'
+        grpcVersion = '1.58.1'
+    }
+}
+
 plugins {
     id 'java'
     id 'org.springframework.boot' version '3.2.6'
     id 'io.spring.dependency-management' version '1.1.5'
+    id 'application'
+    id 'idea'
+    id 'com.google.protobuf' version '0.9.4'
 }
 
 group = 'com.taeny.papa'
 version = '0.0.1-SNAPSHOT'
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:${protobufVersion}"
+    }
+    clean {
+        delete generatedFilesBaseDir
+    }
+    plugins {
+        grpc {
+            artifact = "io.grpc:protoc-gen-grpc-java:${grpcVersion}"
+        }
+    }
+    generateProtoTasks {
+        all()*.plugins {
+            grpc{}
+        }
+    }
+}
 
 java {
     toolchain {
@@ -31,6 +61,23 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+//  for grpc
+    implementation "com.google.protobuf:protobuf-java-util:3.25.1"
+    implementation 'com.google.protobuf:protobuf-java:3.25.1'
+
+    // https://mvnrepository.com/artifact/net.devh/grpc-server-spring-boot-starter
+    implementation group: 'net.devh', name: 'grpc-server-spring-boot-starter', version: '3.1.0.RELEASE'
+    // https://mvnrepository.com/artifact/net.devh/grpc-client-spring-boot-starter
+    implementation group: 'net.devh', name: 'grpc-client-spring-boot-starter', version: '3.1.0.RELEASE'
+
+    runtimeOnly "io.grpc:grpc-netty-shaded:${grpcVersion}"
+    implementation "io.grpc:grpc-protobuf:${grpcVersion}"
+    implementation "io.grpc:grpc-stub:${grpcVersion}"
+
+    implementation 'com.google.protobuf:protobuf-java:3.21.12'
+
+    compileOnly 'org.apache.tomcat:annotations-api:6.0.53'
 }
 
 tasks.named('test') {
