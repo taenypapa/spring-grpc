@@ -4,7 +4,7 @@ This project demonstrates how to set up a gRPC server and client using Spring Bo
 
 ## Prerequisites
 
-- Java 17
+- Java 21
 - Gradle
 - Protobuf Compiler (`protoc`)
 - Kubernetes cluster
