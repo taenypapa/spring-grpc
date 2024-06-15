@@ -1,4 +1,3 @@
-```markdown
 # gRPC Example with Spring Boot and Kubernetes
 
 This project demonstrates how to set up a gRPC server and client using Spring Boot and how to deploy them in a Kubernetes environment. The server listens on port 9090, and the client listens on port 9091.
