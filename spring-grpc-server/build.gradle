@@ -37,6 +37,13 @@ protobuf {
     }
 }
 
+sourceSets {
+    main {
+        java {
+            srcDirs 'build/generated/source/proto/main/java', 'build/generated/source/proto/main/grpc'
+        }
+    }
+}
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
